@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
+from django.contrib.auth.models import User
+
 
 STATUS_CHOICES = [
     ('Pending', 'Pending'),
@@ -114,25 +116,15 @@ class Event(models.Model):
             self.event_time) + " Staff: " + self.event_staff.staff_name + " Type: " + self.event_animal_type.name + " Status: " + self.event_status + " Notes: " + self.event_notes
 
 
-class Farm(AbstractUser):
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
+class Farm(models.Model):
+    phone_number = models.CharField(max_length=17, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True , unique=True)
     email = models.EmailField(unique=True)
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='farm_user_set',
-        blank=True,
-        help_text='The groups this user belongs to.',
-        verbose_name='groups',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='farm_user_set',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
-    )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='farms' ,default=1)  # ForeignKey to User
+    # created_at = models.DateTimeField(auto_now_add=True , blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
 
     def __str__(self):
         return f"{self.username} ({self.email})"

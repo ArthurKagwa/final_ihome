@@ -43,6 +43,7 @@ class Animal(models.Model):
     sex = models.CharField(max_length=1, choices=[('M', 'M'), ('F', 'F')], default='M')
     births = models.IntegerField(null=True)
     farm = models.ForeignKey('Farm', on_delete=models.SET_NULL, null=True, blank=True)
+    tag_color =models.CharField
 
     def __str__(self):
         return "id: " + self.id + " type: " + self.type.name + " breed: " + self.breed.breed_name + " dob: " + str(

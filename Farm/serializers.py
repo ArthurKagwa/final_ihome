@@ -38,5 +38,5 @@ class TaskSerializer(serializers.ModelSerializer):
 class FarmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Farm
-        fields =( 'name','location','phone_number','email', 'owner')
+        fields =( 'name','location','phone_number','email', 'owner','id')
 

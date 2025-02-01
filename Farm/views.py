@@ -56,8 +56,7 @@ class FarmViewSet(ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     def get_queryset(self):
         return Farm.objects.filter(owner=self.request.user)
-
-    # handle error messages on adding farm
+    #getting individual farm details
 
 
 

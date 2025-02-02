@@ -6,7 +6,7 @@ from .models import Animal, Breed, Type, Staff, Event, Task, AbstractUser, Farm
 class TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Type
-        fields = '__all__'
+        fields = ['name', 'desc']
 
 class BreedSerializer(serializers.ModelSerializer):
     class Meta:

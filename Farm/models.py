@@ -16,7 +16,6 @@ STATUS_CHOICES = [
 class Type(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
     desc = models.CharField(max_length=100)
-    farm = models.ForeignKey('Farm', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return "Type: " + self.name + " Description: " + self.desc
@@ -37,17 +36,16 @@ class Animal(models.Model):
     id = models.CharField(max_length=6, primary_key=True)
     type = models.ForeignKey('Type', on_delete=models.SET_NULL, null=True)
     breed = models.ForeignKey('Breed', on_delete=models.SET_NULL, null=True)
-    mother = models.ForeignKey('Animal', on_delete=models.SET_NULL, null=True, related_name='animal_mother')
-    father = models.ForeignKey('Animal', on_delete=models.SET_NULL, null=True, related_name='animal_father')
-    dob = models.DateField()
-    sex = models.CharField(max_length=1, choices=[('M', 'M'), ('F', 'F')], default='M')
-    births = models.IntegerField(null=True)
+    mother = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='animal_mother', blank=True)
+    father = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='animal_father', blank=True)
+    dob = models.DateField()  # Date of birth
+    sex = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')], default='M')
+    births = models.IntegerField(null=True, blank=True)  # Number of births (if applicable)
     farm = models.ForeignKey('Farm', on_delete=models.SET_NULL, null=True, blank=True)
-    tag_color =models.CharField
+    tag_color = models.CharField(max_length=50, blank=True, null=True)  # Tag color for identification
 
     def __str__(self):
-        return "id: " + self.id + " type: " + self.type.name + " breed: " + self.breed.breed_name + " dob: " + str(
-            self.dob)
+        return f"ID: {self.id}, Type: {self.type.name if self.type else 'Unknown'}, Breed: {self.breed.breed_name if self.breed else 'Unknown'}, DOB: {self.dob}"
 
 
 class Staff(models.Model):

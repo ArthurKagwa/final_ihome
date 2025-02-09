@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
 
@@ -87,7 +88,7 @@ class TaskViewSet(ModelViewSet):
 class FarmViewSet(ModelViewSet):
     queryset = Farm.objects.all()
     serializer_class = FarmSerializer
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):

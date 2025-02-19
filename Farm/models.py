@@ -11,6 +11,17 @@ STATUS_CHOICES = [
     ('Cancelled', 'Cancelled'),
 ]
 
+ANIMAL_STATUS_CHOICES = [
+    ('Alive', 'Alive'),
+    ('Dead', 'Dead'),
+    ('Sold', 'Sold'),
+    ('Slaughtered', 'Slaughtered'),
+    ('Stolen', 'Stolen'),
+    ('Lost', 'Lost'),
+    ('Unknown', 'Unknown'),
+    ('Sick', 'Sick'),
+    ]
+
 
 # Create your models here.
 class Type(models.Model):
@@ -43,10 +54,20 @@ class Animal(models.Model):
     births = models.IntegerField(null=True, blank=True)  # Number of births (if applicable)
     farm = models.ForeignKey('Farm', on_delete=models.SET_NULL, null=True, blank=True)
     tag_color = models.CharField(max_length=50, blank=True, null=True)  # Tag color for identification
-
+    status = models.CharField(max_length=40, default='Alive', choices=ANIMAL_STATUS_CHOICES)
     def __str__(self):
         return f"ID: {self.id}, Type: {self.type.name if self.type else 'Unknown'}, Breed: {self.breed.breed_name if self.breed else 'Unknown'}, DOB: {self.dob}"
 
+# exited animals
+class ExitedAnimal(models.Model):
+    id = models.CharField(max_length=6, primary_key=True)
+    type = models.ForeignKey('Type', on_delete=models.SET_NULL, null=True)
+    breed = models.ForeignKey('Breed', on_delete=models.SET_NULL, null=True)
+    mother = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='animal_mother', blank=True)
+    father = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='animal_father', blank=True)
+    dob = models.DateField()  # Date of birth
+    type_of_exit = models.CharField(max_length=50, choices=[('Sold', 'Sold'), ('Slaughtered', 'Slaughtered'), ('Stolen', 'Stolen'), ('Lost', 'Lost'), ('Unknown', 'Unknown')], default='Unknown', blank=False ),
+    exit_date = models.DateField()
 
 class Staff(models.Model):
     staff_id = models.CharField(max_length=10, primary_key=True)

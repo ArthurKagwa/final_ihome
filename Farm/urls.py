@@ -15,7 +15,7 @@ router.register('farms', FarmViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),  # Include the router's URLs
     # iclude chatbot paths
-    path('api/chatbot',include('chatbot.urls')),
+    path('api/chatbot/',include('chatbot.urls')),
     path('api/breeds/by_type/<str:pk>/', BreedViewSet.as_view({'get': 'by_type'}), name='breeds-by-type'),
     path('api/animals/by_type_and_farm/', AnimalViewSet.as_view({'get': 'by_type_and_farm'}), name='animals-by-type-and-farm'),
     path('api/breeds/by_type_and_farm/', BreedViewSet.as_view({'get': 'by_type_and_farm'}),
